@@ -1,20 +1,9 @@
-				List
-			Player Lolem
-			Score:40
+			Player: Lolem
+			Score: 40
 ___________________________________________________
-				List
-			Player Kiraiboi
-			Score:40
+			Player: Kiraiboi
+			Score: 40
 ___________________________________________________
-				List
-			Player Shiraj
-			Score:40
-___________________________________________________
-				List
-			Player Name Lolem
-			Score:20
-___________________________________________________
-				List
-			Player Name Lolem
-			Score:50
+			Player: Shiraj
+			Score: 40
 ___________________________________________________

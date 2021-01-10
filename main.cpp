@@ -70,15 +70,11 @@ void gameStart()
 
     //TO GET MAXIMUM COORDINATES//
     int maxX = getmaxx();
-    int maxY = getmaxy();
-    
-    //printf("%d %d", maxX, maxY);
+    int maxY = getmaxy();    
 
     //TO GET MIDPOINT COORDINATES//
     int midX = maxX/2;
     int midY = maxY/2;
-    
-    //printf("%d %d", midX, midY);
 
     //SNAKES COORDINATES//
     int x[500],y[500];
@@ -122,8 +118,8 @@ void gameStart()
 			//Food production 
             do
             {
-                xCoordinateOfFood = 1 + rand() % 1000;
-                yCoordinateOfFood = 1 + rand() % 800;
+                xCoordinateOfFood = 1 + rand() % 990;
+                yCoordinateOfFood = 1 + rand() % 790;
             }while(getpixel(xCoordinateOfFood,yCoordinateOfFood) !=0 && xCoordinateOfFood > 10 && yCoordinateOfFood > 10);
 
             xCoordinateOfFood = xCoordinateOfFood/10;
@@ -206,7 +202,6 @@ void gameStart()
 
         delay(100);
         cleardevice();
-        //printf("%d   %d   %d   %d  %d  \n",x[0],y[0],xCoordinateOfFood,yCoordinateOfFood,length);
 		//Gameover condition
 		if(x[0] >= 1000 || x[0] <= 0 || y[0] >= 800 || y[0] <= 0)
         {
@@ -232,7 +227,7 @@ void gameStart()
 //Game-Over screen
 void gameOver(int score)
 {
-	settextstyle(SANS_SERIF_FONT,HORIZ_DIR,5);
+	settextstyle(0,0,5);
     int maxX = getmaxx();
     int maxY = getmaxy();
 
@@ -242,19 +237,14 @@ void gameOver(int score)
     char printScore[200];
 
     delay(100);
-    cleardevice();
 
-    settextstyle(SANS_SERIF_FONT,HORIZ_DIR,5);
     int width = 276; //textwidth((char*)"GAME OVER!!!");
     int height = 46; //textheight((char*)"GAME OVER!!!");
     int width1 = 339; //textwidth((char*)"YOUR SCORE IS: ");
     int height1 = 46; //textheight((char*)"YOUR SCORE IS: ");
     
-    //printf("%d %d %d %d %d %d", width, height, width1, height1, midX, midY);
-
     setcolor(CYAN);
     outtextxy(midX-width/2,midY-height/2,(char*)"GAME OVER!!!");
-    //delay(100);
 
     setcolor(RED);
     outtextxy(midX-width/2,(midY-100)-height/2,(char*)"GAME OVER!!!");
@@ -270,7 +260,7 @@ void gameOver(int score)
       
 	delay(1000);
 	
-    //PLAY AGAIN//
+    //Menu//
     while(1)
     {
 		if(GetAsyncKeyState(69))
@@ -286,17 +276,17 @@ void gameOver(int score)
 
 void scoreRecord(int s)
 {
-	char newplayer[20],c,ch;
+	char newplayer[20];
 	int j;
 	FILE *info;
 	info = fopen("record.txt","a+");
 	for(j=0; player[j]!='\0'; j++)
 	{ 
-		//to convert the first letter to capital
+		//To convert the first letter to capital
 		newplayer[0] = toupper(player[0]);
 		if(player[j-1]==' ')
 		{
-			newplayer[j] = toupper(player[j]);   //for higher score to be upper so touppercase
+			newplayer[j] = toupper(player[j]);
 			newplayer[j-1] = player[j-1];
 		}
 		else {
@@ -304,9 +294,8 @@ void scoreRecord(int s)
 		}	
 	}
 	newplayer[j]='\0';
-	fprintf(info,"\t\t\t\tList\n");
-	fprintf(info,"\t\t\tPlayer Name %s\n",newplayer); 
-	fprintf(info,"\t\t\tScore:%d\n",s);
+	fprintf(info,"\t\t\tPlayer: %s\n",newplayer); 
+	fprintf(info,"\t\t\tScore: %d\n",s);
 	for(int i=0;i<=50;i++)
 	{
 		fprintf(info,"%c",'__');
@@ -324,7 +313,7 @@ void scoreHistory()
 	getInfo = fopen("record.txt", "r");
 	if(getInfo == NULL)
     {
-        /* Unable to open file hence exit */
+        // Unable to open file hence exit
         printf("Unable to open file.\n");
         exit(0);
     }
