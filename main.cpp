@@ -7,14 +7,21 @@
 #include <windows.h>
 #include <stdlib.h>
 
+char player[50];
 
 void gameOver(int);
 void gameStart();
 void menu();
 void scoreRecord(int);
+void scoreHistory();
+
 
 int main()
 {
+	system("cls");
+	system("color A");
+	printf("\n\t\t Enter name: ");
+	gets(player);
 	menu();
     return 0;
 }
@@ -26,15 +33,11 @@ void menu()
 	
 	system("cls");
 	system("color A");
-	
-	char player[50];
-	
+		
 	printf("\n\n\t\t\t\t Snake Game");
-	printf("\n\t\t \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2 Welcome to the Main Menu \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2");
-	printf("\n\t\t Enter name: ");
-	gets(player);
+	printf("\n\t\t \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2 Welcome to the Main Menu %s \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2",player);
     printf("\n\n\n\t\t 1.Start Game.\n");
-    printf("\t\t 2.Highscore record.\n");
+    printf("\t\t 2.Score record.\n");
     printf("\t\t 3.Play Again.\n");
     printf("\t\t 4.Exit.");
     
@@ -47,6 +50,7 @@ void menu()
     	gameStart();
     	break;
     case 2:
+    	scoreHistory();
 		break;
     case 3:
         gameStart();
@@ -59,7 +63,7 @@ void menu()
 //ACTUAL GAME//
 void gameStart()
 {
-    int endcheck;
+    int endcheck = 3;
 
     initwindow(1009,813,(char*)"Snake");
 
@@ -78,7 +82,7 @@ void gameStart()
 
     //SNAKES COORDINATES//
     int x[500],y[500];
-    int length = 10;
+    int length = 15;
 
     x[0] = midX;
     y[0] = midY;
@@ -112,8 +116,10 @@ void gameStart()
         {
             length += 1;
             score += 10;
+            //Black food color
             setfillstyle(1,BLACK);
-            bar(xCoordinateOfFood,yCoordinateOfFood,xCoordinateOfFood+10,yCoordinateOfFood+10);
+            bar(xCoordinateOfFood,yCoordinateOfFood,xCoordinateOfFood+10,yCoordinateOfFood+10); 
+			//Food production 
             do
             {
                 xCoordinateOfFood = 1 + rand() % 1000;
@@ -201,19 +207,32 @@ void gameStart()
         delay(100);
         cleardevice();
         //printf("%d   %d   %d   %d  %d  \n",x[0],y[0],xCoordinateOfFood,yCoordinateOfFood,length);
-
-        if(x[0] >= 1000 || x[0] <= 0 || y[0] >= 800 || y[0] <= 0)
+		//Gameover condition
+		if(x[0] >= 1000 || x[0] <= 0 || y[0] >= 800 || y[0] <= 0)
         {
             gameOver(score);
             break;
         }
-
+		for(int i = 2; i < length; i++)
+		{
+			if(x[0] == x[i] && y[0] == y[i])
+			{
+				endcheck = i;
+				break;
+			}
+		}
+		if(x[0] == x[endcheck] && y[0] == y[endcheck])
+		{
+			gameOver(score);
+			break;	
+		}
     }
 }
 
 //Game-Over screen
 void gameOver(int score)
 {
+	settextstyle(SANS_SERIF_FONT,HORIZ_DIR,5);
     int maxX = getmaxx();
     int maxY = getmaxy();
 
@@ -231,7 +250,7 @@ void gameOver(int score)
     int width1 = 339; //textwidth((char*)"YOUR SCORE IS: ");
     int height1 = 46; //textheight((char*)"YOUR SCORE IS: ");
     
-    printf("%d %d %d %d %d %d", width, height, width1, height1, midX, midY);
+    //printf("%d %d %d %d %d %d", width, height, width1, height1, midX, midY);
 
     setcolor(CYAN);
     outtextxy(midX-width/2,midY-height/2,(char*)"GAME OVER!!!");
@@ -243,28 +262,23 @@ void gameOver(int score)
     sprintf(printScore,"YOUR SCORE IS: %d",score);
     outtextxy(midX-width1/2,(midY+100)-height1/2,printScore);
 
-    int width2 = textwidth((char*)"Press P to PLAY AGAIN!!!");
-    int height2 = textheight((char*)"Press P to PLAY AGAIN!!!");
+    int width2 = textwidth((char*)"Press E to go to Main menu");
+    int height2 = textheight((char*)"Press E to go to Main menu");
 
     setcolor(CYAN);
-    outtextxy(35+midX-width2/2,10+(midY+200)-height2/2,(char*)"Press P to PLAY AGAIN!!!");
-     
-    printf("%d %d %d %d", width, height, width1, height1); 
+    outtextxy(midX-width2/2,(midY+200)-height2/2,(char*)"Press E to goto Main menu");
+      
 	delay(1000);
 	
     //PLAY AGAIN//
     while(1)
     {
-		if(GetAsyncKeyState(80))
+		if(GetAsyncKeyState(69))
 		{
 			closegraph();
-			gameStart();
+			scoreRecord(score);
+			menu();
 			break;
-		}
-		else if(GetAsyncKeyState(69))
-		{
-			closegraph();
-			scoreRecord(score);	
 		}
     }
     
@@ -272,44 +286,61 @@ void gameOver(int score)
 
 void scoreRecord(int s)
 {
-	char player[20],newplayer[20],c;
+	char newplayer[20],c,ch;
 	int j;
 	FILE *info;
-	info=fopen("record.txt","a+");
-	getch();
-	system("cls");
-	printf("Enter your name\n");
-	scanf("%s",player);
-	for(j=0;player[j]!='\0';j++)
+	info = fopen("record.txt","a+");
+	for(j=0; player[j]!='\0'; j++)
 	{ 
-	//to convert the first letter to capital
-	newplayer[0] = toupper(player[0]);
-	if(player[j-1]==' ')
-	{
-	newplayer[j] = toupper(player[j]);   //for higher score to be upper so touppercase
-	newplayer[j-1]=player[j-1];}
-	
-	else newplayer[j]=player[j];
-	
+		//to convert the first letter to capital
+		newplayer[0] = toupper(player[0]);
+		if(player[j-1]==' ')
+		{
+			newplayer[j] = toupper(player[j]);   //for higher score to be upper so touppercase
+			newplayer[j-1] = player[j-1];
+		}
+		else {
+			newplayer[j] = player[j];
+		}	
 	}
 	newplayer[j]='\0';
 	fprintf(info,"\t\t\t\tList\n");
-	fprintf(info,"Player Name %s\n",newplayer); 
-	fprintf(info,"Score:%d\n",s);
+	fprintf(info,"\t\t\tPlayer Name %s\n",newplayer); 
+	fprintf(info,"\t\t\tScore:%d\n",s);
 	for(int i=0;i<=50;i++)
 	{
 		fprintf(info,"%c",'__');
 	}
 	fprintf(info,"\n");
 	fclose(info);
-	printf("Do you want to see past score records press 'y'\n");
-	char ch = getch();
-	system("cls");
-	if(ch=='y' or ch=='Y'){
-	info=fopen("record.txt","r");//to read the file
+}
+
+void scoreHistory()
+{
+	FILE *getInfo;
+	char character;
+	char back;
+	
+	getInfo = fopen("record.txt", "r");
+	if(getInfo == NULL)
+    {
+        /* Unable to open file hence exit */
+        printf("Unable to open file.\n");
+        exit(0);
+    }
+    
+    system("cls");
 	do{
-	putchar(c=getc(info));
-	}while(c!=EOF);}//prints till the end of file
-	fclose(info);
+		character = fgetc(getInfo);
+		putchar(character);
+	}while(character != EOF);
+	fclose(getInfo);
+	printf("\n\n\t\t\t Press 'B' to go to main menu: ");
+	scanf(" %c", &back);
+	back = toupper(back);
+	if(back == 'B')
+	{
+		menu();	
+	}	
 }
 
