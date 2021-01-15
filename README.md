@@ -13,7 +13,7 @@
 - Copy <strong>6-ConsoleAppGraphics.template</strong> and <strong>ConsoleApp_cpp_graph.txt</strong> and paste it in following location.
 
 ```
-    Program Files/Dev-Cpp
+    Program Files/Dev-Cpp/Templates
 ```
 
 - Again, copy <strong>graphics.h</strong> and <strong>winbgim.h</strong> in the following location:
