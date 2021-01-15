@@ -127,17 +127,14 @@ void gameStart()
 			//Food production 
             do
             {
-                xCoordinateOfFood = 5 + rand() % 990;
-                yCoordinateOfFood = 5 + rand() % 790;
-                printf("  %d  %d", xCoordinateOfFood, yCoordinateOfFood);
+                xCoordinateOfFood = 15 + rand() % 990;
+                yCoordinateOfFood = 15 + rand() % 790;
             }while(getpixel(xCoordinateOfFood,yCoordinateOfFood) !=0 && xCoordinateOfFood > 10 && yCoordinateOfFood > 10);
 
             xCoordinateOfFood = xCoordinateOfFood/10;
             xCoordinateOfFood = xCoordinateOfFood*10;
             yCoordinateOfFood = yCoordinateOfFood/10;
             yCoordinateOfFood = yCoordinateOfFood*10;
-            
-            printf("  %d  %d", xCoordinateOfFood, yCoordinateOfFood);
         }
         setfillstyle(1,CYAN);
         bar(xCoordinateOfFood,yCoordinateOfFood,xCoordinateOfFood+10,yCoordinateOfFood+10);
@@ -286,8 +283,8 @@ void gameStart1(int constantDirection, int x[0], int y[0], int xCoordinateOfFood
 			//Food production 
             do
             {
-                xCoordinateOfFood = 5 + rand() % 990;
-                yCoordinateOfFood = 5 + rand() % 790;
+                xCoordinateOfFood = 15 + rand() % 990;
+                yCoordinateOfFood = 15 + rand() % 790;
             }while(getpixel(xCoordinateOfFood,yCoordinateOfFood) !=0 && xCoordinateOfFood > 10 && yCoordinateOfFood > 10);
 
             xCoordinateOfFood = xCoordinateOfFood/10;
@@ -454,32 +451,32 @@ void levelTwo(int score)
 			//Food production 
             do
             {
-                xCoordinateOfFood = 5 + rand() % 990;
-                yCoordinateOfFood = 5 + rand() % 790;
+                xCoordinateOfFood = 15 + rand() % 990;
+                yCoordinateOfFood = 15 + rand() % 790;
                 
                 //Food to generate outside top obstacle
                 if(xCoordinateOfFood >= 50 && xCoordinateOfFood <= maxX-50 || yCoordinateOfFood >= 50 && yCoordinateOfFood <= 60)   
 				{
-                	xCoordinateOfFood = 5 + rand() % 990;
-               		yCoordinateOfFood = 5 + rand() % 790;
+                	xCoordinateOfFood = 15 + rand() % 990;
+               		yCoordinateOfFood = 15 + rand() % 790;
 				}
 				//Food to generate outside bottom obstacle
 				else if(xCoordinateOfFood >= 50 && xCoordinateOfFood <= maxX-50 || yCoordinateOfFood >= maxY-50 && yCoordinateOfFood <= maxY-60)
 				{
-                	xCoordinateOfFood = 5 + rand() % 990;
-                	yCoordinateOfFood = 5 + rand() % 790;
+                	xCoordinateOfFood = 15 + rand() % 990;
+                	yCoordinateOfFood = 15 + rand() % 790;
 				}
 				//Food to generate outside mid top obstacle
 				else if(xCoordinateOfFood >= midX-200 && xCoordinateOfFood <= midX+200 || yCoordinateOfFood >= midY-200 && yCoordinateOfFood <= midY-190)
 				{
-                	xCoordinateOfFood = 5 + rand() % 990;
-                	yCoordinateOfFood = 5 + rand() % 790;
+                	xCoordinateOfFood = 15 + rand() % 990;
+                	yCoordinateOfFood = 15 + rand() % 790;
 				}
 				//Food to generate outside mid bottom obstacle
 				else if(xCoordinateOfFood >= midX-200 && xCoordinateOfFood <= midX+200 || yCoordinateOfFood >= midY+200 && yCoordinateOfFood <= midY+190)
 				{
-                	xCoordinateOfFood = 5 + rand() % 990;
-                	yCoordinateOfFood = 5 + rand() % 790;
+                	xCoordinateOfFood = 15 + rand() % 990;
+                	yCoordinateOfFood = 15 + rand() % 790;
 				}
             }while(getpixel(xCoordinateOfFood,yCoordinateOfFood) !=0 && xCoordinateOfFood > 10 && yCoordinateOfFood > 10);
 
@@ -570,25 +567,25 @@ void levelTwo(int score)
             break;
         }
         //Top Obstacle
-        if(x[0] >= 50 && x[0] <= maxX-50 && y[0] >= 50 && y[0] <= 60)
+        if(x[0] >= 50 && x[0] < maxX-50 && y[0] >= 50 && y[0] < 60)
         {
         	gameOver(score);
         	break;
 		}
 		//Bottom Obstacle
-		if(x[0] >= 50 && x[0] <= maxX-50 && y[0] >= maxY-60 && y[0] <= maxY-50)
+		if(x[0] >= 50 && x[0] < maxX-50 && y[0] >= maxY-60 && y[0] < maxY-50)
         {
         	gameOver(score);
         	break;
 		}
 		//Mid Top Obstacle
-		if(x[0] >= midX-200 && x[0] <= midX+200 && y[0] >= midY-200 && y[0] <= midY-190)
+		if(x[0] >= midX-200 && x[0] < midX+200 && y[0] >= midY-200 && y[0] < midY-190)
         {
         	gameOver(score);
         	break;
 		}
 		//Mid Bottom Obstacle
-		if(x[0] >= midX-200 && x[0] <= midX+200 && y[0] >= midY+190 && y[0] <= midY+200)
+		if(x[0] >= midX-200 && x[0] < midX+200 && y[0] >= midY+190 && y[0] < midY+200)
         {
         	gameOver(score);
         	break;
@@ -661,7 +658,7 @@ void gameOver(int score)
 }
 
 //Record in File
-void scoreRecord(int s)
+void scoreRecord(int score)
 {
 	char newplayer[20];
 	int j;
@@ -682,7 +679,7 @@ void scoreRecord(int s)
 	}
 	newplayer[j]='\0';
 	fprintf(info,"\t\t\tPlayer: %s\n",newplayer);
-	fprintf(info,"\t\t\tScore: %d\n",s);
+	fprintf(info,"\t\t\tScore: %d\n",score);
 	for(int i=0;i<=50;i++)
 	{
 		fprintf(info,"%c",'__');
