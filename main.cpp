@@ -10,6 +10,7 @@
 char player[50];
 int length = 15;
 int endcheck = 3;
+int score = 0;
 
 void gameOver(int);
 void gameStart();
@@ -35,6 +36,7 @@ int main(void)
 void menu()
 {
 	int choice;
+	int levelChoice;
 	
 	system("cls");
 	system("color A");
@@ -44,7 +46,8 @@ void menu()
     printf("\n\n\n\t\t 1.Start Game.\n");
     printf("\t\t 2.Score record.\n");
     printf("\t\t 3.Play Again.\n");
-    printf("\t\t 4.Exit.");
+    printf("\t\t 4.Level Selection.\n");
+    printf("\t\t 5.Exit.");
     
     printf("\n\n\n\t\t Enter your choice: ");
     scanf("%d", &choice);
@@ -61,6 +64,31 @@ void menu()
         gameStart();
         break;
     case 4:
+    	system("cls");
+    	printf("\n\n\t\t \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2 Level Selection \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2",player);
+    	printf("\n\n\n\t\t 1.Level 1\n");
+    	printf("\t\t 2.Level 2\n");
+    	printf("\t\t 3.Main Menu");
+    	printf("\n\n\n\t\t Enter your choice: ");
+    	scanf("%d", &levelChoice);
+    	switch(levelChoice)
+    	{
+    		case 1:
+    			gameStart();
+    			break;
+    		case 2:
+    			initwindow(1009,813);
+    			score = 0;
+    			levelTwo(score);
+    			break;
+    		case 3:
+    			menu();
+    			break;
+    		default:
+    			printf("Enter Valid Choice!");
+		}
+		break;
+    case 5:
     	exit(0);
     default:
     	printf("Enter Valid Choice!");
@@ -244,11 +272,6 @@ void gameStart1(int constantDirection, int x[0], int y[0], int xCoordinateOfFood
     int midY = maxY/2;
 
     int direction;
-
-    //SCORE//
-    //int score = 0;
-    //int check;
-
 
     while(1)
     {
